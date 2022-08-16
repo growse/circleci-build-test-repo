@@ -13,14 +13,14 @@ jobs:
       - name: Run CircleCI pipeline
         uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.0.5
         with:
-          GHS_Meta: "metadata"
+          GHA_Meta: "metadata"
         env:
           CCI_TOKEN: ${{ secrets.CCI_TOKEN }}
   pr-commented:
     runs-on: ubuntu-latest
     if: ${{ github.event.issue.pull_request }}
     steps:
-      - run: "echo ${{github.event}}"
+      - uses: hmarr/debug-action@v2
       - name: Run CircleCI pipeline
         uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.0.5
         with:
