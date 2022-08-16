@@ -10,6 +10,7 @@ jobs:
   trigger-circleci:
     runs-on: ubuntu-latest
     steps:
+      - uses: hmarr/debug-action@v2
       - name: Run CircleCI pipeline
         uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.0.5
         with:
