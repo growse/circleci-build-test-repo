@@ -1,4 +1,18 @@
 version: 2.1
+parameters:
+  GHA_Actor:
+    type: string
+    default: ""
+  GHA_Action:
+    type: string
+    default: ""
+  GHA_Event:
+    type: string
+    default: ""
+  GHA_Meta:
+    type: string
+    default: ""
+
 jobs:
   build:
     docker:
@@ -19,6 +33,26 @@ jobs:
       - run:
           name: test
           command: echo "Doing a unit test"
+
+  smoketest:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: test
+          command: echo "Doing a smoke test"
+
+  integration-test:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: test
+          command: echo "Doing a full integration test"
 
 workflows:
   build-and-test:
