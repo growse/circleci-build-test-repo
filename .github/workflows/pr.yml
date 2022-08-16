@@ -18,8 +18,9 @@ jobs:
           CCI_TOKEN: ${{ secrets.CCI_TOKEN }}
   pr-commented:
     runs-on: ubuntu-latest
-    if: ${{ github.event.issue.pull_request && github.event.pull_request.user.login == "growse" && github.event.comment.body.startsWith('/Trigger') }}
+    if: ${{ github.event.issue.pull_request }}
     steps:
+      - run: "echo ${{github.event}}"
       - name: Run CircleCI pipeline
         uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.0.5
         with:
