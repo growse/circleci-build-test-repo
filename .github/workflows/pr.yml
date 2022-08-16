@@ -9,7 +9,7 @@ on:
 jobs:
   trigger-circleci:
     runs-on: ubuntu-latest
-    if: ${{ github.event.label && ( github.event.label.name == 'smoke-test-required' || github.event.label.name == 'integrtion-test-required') }}
+    if: ${{ github.event.label && ( github.event.label.name == 'smoke-test-required' || github.event.label.name == 'integration-test-required') }}
     steps:
       - uses: hmarr/debug-action@v2
       - name: Run CircleCI pipeline
