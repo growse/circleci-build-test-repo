@@ -1,0 +1,35 @@
+name: PR flows
+
+on:
+  pull_request:
+    types:
+      - labeled
+  issue_comment:
+
+jobs:
+  trigger-circleci:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.label && ( github.event.label.name == 'smoke-test-required' || github.event.label.name == 'integration-test-required') }}
+    steps:
+      - uses: hmarr/debug-action@v2
+      - name: Run CircleCI pipeline
+        uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.0.5
+        with:
+          GHA_Meta: ${{ github.event.label.name }}
+        env:
+          CCI_TOKEN: ${{ secrets.CCI_TOKEN }}
+  pr-commented:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.issue.pull_request && startsWith(github.event.comment.body, '/Rerun') && github.event.comment.user.login == 'growse'}}
+    steps:
+      - uses: hmarr/debug-action@v2
+      - name: Get PR labels
+        id: pr-labels
+        uses: joerick/pr-labels-action@v1.0.6
+      - name: Run CircleCI pipeline
+        if: contains(steps.pr-labels.outputs.labels, 'smoke-test-required')
+        uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.0.5
+        with:
+          GHA_Meta: "smoke-test-required"
+        env:
+          CCI_TOKEN: ${{ secrets.CCI_TOKEN }}
