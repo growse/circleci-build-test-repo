@@ -23,11 +23,11 @@ jobs:
     if: ${{ github.event.issue.pull_request && startsWith(github.event.comment.body, '/Rerun') && github.event.comment.user.login == 'growse'}}
     steps:
       - uses: hmarr/debug-action@v2
-      - run: echo ::set-output name=labels::$(gh pr view $PR_NUMBER --repo $REPO --json labels --jq [.labels[].name])
+      - run: echo ::set-output name=branch::$(gh pr view $PR_NO --repo $REPO --json headRefName --jq '.headRefName')
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
-          PR_NUMBER: ${{ github.event.issues.number }}
+          PR_NO: ${{ github.event.issue.number }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         id: pr-labels
       - name: Run CircleCI pipeline
         if: contains(fromJSON(steps.pr-labels.outputs.labels), 'smoke-test-required')
