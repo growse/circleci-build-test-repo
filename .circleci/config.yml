@@ -1,0 +1,27 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: build
+          command: echo "Doing a build"
+
+  test:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: test
+          command: echo "Doing a unit test"
+
+workflows:
+  build-and-test:
+    jobs:
+      - build
+      - test
