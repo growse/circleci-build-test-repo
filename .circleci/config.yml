@@ -56,12 +56,9 @@ jobs:
 
 workflows:
   build-and-test:
+    when: << pipeline.git.branch == "main" >>
     jobs:
-      - build:
-          filters:
-            branches:
-              only:
-                - main
+      - build
       - test
 
   smoke-test:
