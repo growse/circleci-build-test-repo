@@ -57,7 +57,11 @@ jobs:
 workflows:
   build-and-test:
     jobs:
-      - build
+      - build:
+          filters:
+            branches:
+              only:
+                - main
       - test
 
   smoke-test:
