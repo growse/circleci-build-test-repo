@@ -23,9 +23,10 @@ jobs:
     if: ${{ github.event.issue.pull_request && startsWith(github.event.comment.body, '/Rerun') && github.event.comment.user.login == 'growse'}}
     steps:
       - uses: hmarr/debug-action@v2
-      - run: echo "${{ toJSON(github.event.issue.labels) }}"
+      - run: echo ::set-output name=labels::$(gh pr view ${{github.event.issue.number}} --json labels --jq [.labels[].name])
+        id: pr-labels
       - name: Run CircleCI pipeline
-        if: contains(steps.pr-labels.outputs.labels, 'smoke-test-required')
+        if: contains(fromJSON(steps.pr-labels.outputs.labels), 'smoke-test-required')
         uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.0.5
         with:
           GHA_Meta: "smoke-test-required"
