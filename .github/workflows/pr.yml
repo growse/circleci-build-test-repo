@@ -24,6 +24,8 @@ jobs:
     steps:
       - uses: hmarr/debug-action@v2
       - run: echo ::set-output name=labels::$(gh pr view ${{github.event.issue.number}} --json labels --jq [.labels[].name])
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         id: pr-labels
       - name: Run CircleCI pipeline
         if: contains(fromJSON(steps.pr-labels.outputs.labels), 'smoke-test-required')
