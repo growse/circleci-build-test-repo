@@ -48,14 +48,13 @@ workflows:
       - release:
           requires:
             - integration-test
-
-  smoke-test:
-    when: << pipeline.parameters.smoke-test-required >>
+  pr-test:
+    when:
+      or:
+        - << pipeline.parameters.smoke-test-required >>
+        - << pipeline.parameters.integration-test-required >>
     jobs:
       - smoke-test
-  integration-test:
-    when: << pipeline.parameters.integration-test-required >>
-    jobs:
       - integration-test
 
 jobs:
@@ -84,20 +83,29 @@ jobs:
       - image: cimg/base:stable
     resource_class: small
     steps:
-      - checkout
-      - run:
-          name: test
-          command: echo "Doing a smoke test"
+      - run: echo ""
+      - when:
+          condition: << pipeline.parameters.smoke-test-required >>
+          steps:
+            - checkout
+            - run:
+                name: test
+                command: echo "Doing a smoke test"
 
   integration-test:
     docker:
       - image: cimg/base:stable
     resource_class: small
+
     steps:
-      - checkout
-      - run:
-          name: test
-          command: echo "Doing a full integration test"
+      - run: echo ""
+      - when:
+          condition: << pipeline.parameters.integration-test-required >>
+          steps:
+            - checkout
+            - run:
+                name: test
+                command: echo "Doing a full integration test"
 
   release:
     docker:
