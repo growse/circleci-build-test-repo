@@ -32,13 +32,6 @@ jobs:
           output-path: /tmp/pipeline-params.json
           mapping: |
             sourcefile.txt source-changed true
-      - run: |
-          cat /tmp/pipeline-params.json
-          echo << pipeline.parameters.GHA_Meta >>
-          echo << pipeline.parameters.GHA_Action >>
-          echo << pipeline.parameters.GHA_Event >>
-          echo << pipeline.parameters.GHA_Actor >>
-          echo << pipeline.git.branch >>
       - when:
           condition:
             equal: ["smoke-test-required", << pipeline.parameters.GHA_Meta >>]
@@ -54,8 +47,6 @@ jobs:
             - run: |
                 cat /tmp/pipeline-params.json | jq '. += { "integration-test-required" : true}' >  /tmp/pipeline-params.json.tmp
                 mv /tmp/pipeline-params.json.tmp /tmp/pipeline-params.json
-      - run: |
-          cat /tmp/pipeline-params.json
       - continuation/continue:
           parameters: /tmp/pipeline-params.json
           configuration_path: .circleci/continue-config.yml
