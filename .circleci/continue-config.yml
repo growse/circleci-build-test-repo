@@ -31,7 +31,7 @@ workflows:
         - not:
             equal: [main, << pipeline.git.branch >>]
         - << pipeline.parameters.source-changed >>
-        - not: << pipeline.parameters.GHA_Action>>
+        - not: << pipeline.parameters.GHA_Action>>]
     jobs:
       - build
   build-test-integration-test-release:
@@ -53,10 +53,17 @@ workflows:
     when: << pipeline.parameters.smoke-test-required >>
     jobs:
       - smoke-test
+      - pr-test-complete:
+          requires:
+            - smoke-test
+
   integration-test:
     when: << pipeline.parameters.integration-test-required >>
     jobs:
       - integration-test
+      - pr-test-complete:
+          requires:
+            - integration-test
 
 jobs:
   build:
@@ -98,6 +105,13 @@ jobs:
       - run:
           name: test
           command: echo "Doing a full integration test"
+
+  pr-test-complete:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - run: echo "done"
 
   release:
     docker:
