@@ -29,10 +29,11 @@ jobs:
       - checkout
       - path-filtering/set-parameters:
           base-revision: main
+          output-path: /tmp/pipeline-params.json
           mapping: |
             sourcefile.txt source-changed true
       - continuation/continue:
-          parameters: pipeline-params.json
+          parameters: /tmp/pipeline-params.json
           configuration_path: .circleci/continue-config.yml
 
 workflows:
