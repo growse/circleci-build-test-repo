@@ -21,7 +21,7 @@ orbs:
   path-filtering: circleci/path-filtering@0.1.3
 
 jobs:
-  do-thing:
+  setup-build-job:
     docker:
       - image: cimg/base:stable
     resource_class: small
@@ -32,6 +32,12 @@ jobs:
           output-path: /tmp/pipeline-params.json
           mapping: |
             sourcefile.txt source-changed true
+      - when:
+          condition:
+            equal: ["smoke-test-required", << pipeline.parameters.GHA_Meta >>]
+          steps:
+            - run: |
+                cat /tmp/pipeline-params.json | jq '. += { "smoke-test-required" : true}' >  /tmp/pipeline-params.json
       - continuation/continue:
           parameters: /tmp/pipeline-params.json
           configuration_path: .circleci/continue-config.yml

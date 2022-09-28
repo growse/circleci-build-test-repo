@@ -5,6 +5,12 @@ parameters:
   source-changed:
     type: boolean
     default: false
+  smoke-test-required:
+    type: boolean
+    default: false
+  integration-test-required:
+    type: boolean
+    default: false
 jobs:
   build:
     docker:
@@ -61,7 +67,7 @@ workflows:
     when:
       and:
         - equal: [main, << pipeline.git.branch >>]
-        - equal: [true, << pipeline.parameters.source-changed >>]
+        - << pipeline.parameters.source-changed >>
     jobs:
       - build
       - test
@@ -73,9 +79,10 @@ workflows:
             - integration test
 
   smoke-test:
-    when:
-      and:
-        # - equal: ["smoke-test-required", pipeline.parameters.GHA_Meta]
-        - << pipeline.parameters.GHA_Action >>
+    when: << pipeline.parameters.smoke-test-required >>
     jobs:
       - smoketest
+  integration-test:
+    when: << pipeline.parameters.integration-test-required >>
+    jobs:
+      - integration-test
