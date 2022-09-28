@@ -2,3 +2,4 @@ Some source code
 Test
 Toot
 Feature 1
+Feature 2
