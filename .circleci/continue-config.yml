@@ -11,6 +11,40 @@ parameters:
   integration-test-required:
     type: boolean
     default: false
+
+workflows:
+  just-build:
+    when:
+      and:
+        - not:
+            - equal: [main, << pipeline.git.branch >>]
+        - << pipeline.parameters.source-changed >>
+    jobs:
+      - build
+  build-test-integration-test-release:
+    when:
+      and:
+        - equal: [main, << pipeline.git.branch >>]
+        - << pipeline.parameters.source-changed >>
+    jobs:
+      - build
+      - test
+      - integration-test:
+          requires:
+            - test
+      - release:
+          requires:
+            - integration-test
+
+  smoke-test:
+    when: << pipeline.parameters.smoke-test-required >>
+    jobs:
+      - smoke-test
+  integration-test:
+    when: << pipeline.parameters.integration-test-required >>
+    jobs:
+      - integration-test
+
 jobs:
   build:
     docker:
@@ -61,28 +95,3 @@ jobs:
       - run:
           name: test
           command: echo "Doing a release"
-
-workflows:
-  build-test-integration-test-release:
-    when:
-      and:
-        - equal: [main, << pipeline.git.branch >>]
-        - << pipeline.parameters.source-changed >>
-    jobs:
-      - build
-      - test
-      - integration-test:
-          requires:
-            - test
-      - release:
-          requires:
-            - integration-test
-
-  smoke-test:
-    when: << pipeline.parameters.smoke-test-required >>
-    jobs:
-      - smoke-test
-  integration-test:
-    when: << pipeline.parameters.integration-test-required >>
-    jobs:
-      - integration-test
