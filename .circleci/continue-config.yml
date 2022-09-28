@@ -1,5 +1,7 @@
 ---
 version: 2.1
+
+parameters:
   source-changed:
     type: boolean
     default: false
@@ -58,7 +60,7 @@ workflows:
   build-and-test:
     when:
       - equal: [main, << pipeline.git.branch >>]
-      - equal: [true, << pipeline.parameters.source-changed >> ]
+      - equal: [true, << pipeline.parameters.source-changed >>]
     jobs:
       - build
       - test
