@@ -34,10 +34,10 @@ jobs:
             sourcefile.txt source-changed true
       - run: |
           cat /tmp/pipeline-params.json
-          echo $GHA_Actor
-          echo $GHA_Action
-          echo $GHA_Event
-          echo $GHA_Meta
+          echo << pipeline.parameters.GHA_Meta >>
+          echo << pipeline.parameters.GHA_Action >>
+          echo << pipeline.parameters.GHA_Event >>
+          echo << pipeline.parameters.GHA_Actor >>
       - when:
           condition:
             equal: ["smoke-test-required", << pipeline.parameters.GHA_Meta >>]
