@@ -97,6 +97,7 @@ jobs:
           name: test
           command: echo "Doing a full integration test"
 
+  # Stub job that allows us to gate GH PRs on either inegration or smoke test complete
   pr-test-complete:
     docker:
       - image: cimg/base:stable
