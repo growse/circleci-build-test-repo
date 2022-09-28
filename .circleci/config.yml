@@ -43,15 +43,23 @@ jobs:
             echo $CIRCLE_SHA1
       - when:
           condition:
-            equal: ["smoke-test-required", << pipeline.parameters.GHA_Meta >>]
+            or:
+              - equal:
+                  ["smoke-test-required", << pipeline.parameters.GHA_Meta >>]
+              - equal: ["trigger-smoke-test", << pipeline.git.branch >>]
           steps:
             - run: |
                 cat /tmp/pipeline-params.json | jq '. += { "smoke-test-required" : true}' >  /tmp/pipeline-params.json.tmp
                 mv /tmp/pipeline-params.json.tmp /tmp/pipeline-params.json
       - when:
           condition:
-            equal:
-              ["integration-test-required", << pipeline.parameters.GHA_Meta >>]
+            or:
+              - equal:
+                  [
+                    "integration-test-required",
+                    << pipeline.parameters.GHA_Meta >>,
+                  ]
+              - equal: ["trigger-integration-test", << pipeline.git.branch >>]
           steps:
             - run: |
                 cat /tmp/pipeline-params.json | jq '. += { "integration-test-required" : true}' >  /tmp/pipeline-params.json.tmp
