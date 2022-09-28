@@ -45,4 +45,4 @@ jobs:
 workflows:
   generate-config:
     jobs:
-      - do-thing
+      - setup-build-job
