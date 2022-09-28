@@ -20,11 +20,21 @@ orbs:
   continuation: circleci/continuation@0.3.1
   path-filtering: circleci/path-filtering@0.1.3
 
+jobs:
+  do-thing:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - path-filtering/set-parameters:
+          base-revision: main
+          mapping: |
+            sourcefile.txt source-changed true
+      - continuation/continue:
+          parameters: pipeline-params.json
+          configuration_path: .circleci/continue-config.yml
+
 workflows:
   generate-config:
     jobs:
-      - path-filtering/filter:
-          base-revision: main
-          config-path: .circleci/continue-config.yml
-          mapping: |
-            sourcefile.txt source-changed true
+      - do-thing
