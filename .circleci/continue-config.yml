@@ -16,15 +16,15 @@ workflows:
   just-build:
     when:
       and:
-        - equal: [main, << pipeline.git.branch >>]
+        - not:
+            equal: [main, << pipeline.git.branch >>]
         - << pipeline.parameters.source-changed >>
     jobs:
       - build
   build-test-integration-test-release:
     when:
       and:
-        - not:
-            equal: [main, << pipeline.git.branch >>]
+        - equal: [main, << pipeline.git.branch >>]
         - << pipeline.parameters.source-changed >>
     jobs:
       - build
