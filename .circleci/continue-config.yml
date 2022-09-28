@@ -32,7 +32,7 @@ jobs:
           name: test
           command: echo "Doing a unit test"
 
-  smoketest:
+  smoke-test:
     docker:
       - image: cimg/base:stable
     resource_class: small
@@ -76,12 +76,12 @@ workflows:
             - test
       - release:
           requires:
-            - integration test
+            - integration-test
 
   smoke-test:
     when: << pipeline.parameters.smoke-test-required >>
     jobs:
-      - smoketest
+      - smoke-test
   integration-test:
     when: << pipeline.parameters.integration-test-required >>
     jobs:
