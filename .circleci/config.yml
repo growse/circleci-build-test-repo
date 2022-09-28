@@ -38,7 +38,6 @@ jobs:
           steps:
             - run: |
                 cat /tmp/pipeline-params.json | jq '. += { "smoke-test-required" : true}' >  /tmp/pipeline-params.json
-                cat /tmp/pipeline-params.json
       - when:
           condition:
             equal:
@@ -46,6 +45,8 @@ jobs:
           steps:
             - run: |
                 cat /tmp/pipeline-params.json | jq '. += { "integration-test-required" : true}' >  /tmp/pipeline-params.json
+      - run: |
+          cat /tmp/pipeline-params.json
       - continuation/continue:
           parameters: /tmp/pipeline-params.json
           configuration_path: .circleci/continue-config.yml
