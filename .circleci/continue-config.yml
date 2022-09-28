@@ -57,10 +57,11 @@ jobs:
           command: echo "Doing a release"
 
 workflows:
-  build-and-test:
+  build-test-integration-test-release:
     when:
-      - equal: [main, << pipeline.git.branch >>]
-      - equal: [true, << pipeline.parameters.source-changed >>]
+      and:
+        - equal: [main, << pipeline.git.branch >>]
+        - equal: [true, << pipeline.parameters.source-changed >>]
     jobs:
       - build
       - test
