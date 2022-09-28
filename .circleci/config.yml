@@ -32,6 +32,15 @@ jobs:
           output-path: /tmp/pipeline-params.json
           mapping: |
             sourcefile.txt source-changed true
+      - run:
+          name: Debug
+          command: |
+            echo $CIRCLE_BRANCH
+            echo $CIRCLE_PR_NUMBER
+            echo $CIRCLE_PR_REPONAME
+            echo $CIRCLE_PROJECT_REPONAME
+            echo $CIRCLE_PULL_REQUEST
+            echo $CIRCLE_SHA1
       - when:
           condition:
             equal: ["smoke-test-required", << pipeline.parameters.GHA_Meta >>]
