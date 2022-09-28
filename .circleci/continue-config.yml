@@ -25,15 +25,6 @@ parameters:
     default: ""
 
 workflows:
-  just-build:
-    when:
-      and:
-        - not:
-            equal: [main, << pipeline.git.branch >>]
-        - << pipeline.parameters.source-changed >>
-        - not: << pipeline.parameters.GHA_Action>>]
-    jobs:
-      - build
   build-test-integration-test-release:
     when:
       and:
