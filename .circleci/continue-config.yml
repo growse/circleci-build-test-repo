@@ -53,10 +53,17 @@ workflows:
     when: << pipeline.parameters.smoke-test-required >>
     jobs:
       - smoke-test
+      - pr-test-complete:
+        requires:
+          - smoke-test
+
   integration-test:
     when: << pipeline.parameters.integration-test-required >>
     jobs:
       - integration-test
+      - pr-test-complete:
+        requires:
+          - integration-test
 
 jobs:
   build:
@@ -98,6 +105,12 @@ jobs:
       - run:
           name: test
           command: echo "Doing a full integration test"
+  pr-test-complete:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - echo "done"
 
   release:
     docker:
