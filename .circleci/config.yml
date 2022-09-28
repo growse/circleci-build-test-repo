@@ -26,6 +26,7 @@ jobs:
       - image: cimg/base:stable
     resource_class: small
     steps:
+      - checkout
       - path-filtering/set-parameters:
           base-revision: main
           mapping: |
