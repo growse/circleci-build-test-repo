@@ -32,6 +32,8 @@ jobs:
           output-path: /tmp/pipeline-params.json
           mapping: |
             sourcefile.txt source-changed true
+      - run: |
+          cat /tmp/pipeline-params.json
       - when:
           condition:
             equal: ["smoke-test-required", << pipeline.parameters.GHA_Meta >>]
