@@ -1,4 +1,5 @@
-name: PR flows
+name: Build and test PRs
+run-name: "Trigger CircleCI build from ${{ github.event.action }} event by @${{ github.actor }}"
 
 on:
   pull_request:
