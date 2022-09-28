@@ -11,6 +11,18 @@ parameters:
   integration-test-required:
     type: boolean
     default: false
+  GHA_Actor:
+    type: string
+    default: ""
+  GHA_Action:
+    type: string
+    default: ""
+  GHA_Event:
+    type: string
+    default: ""
+  GHA_Meta:
+    type: string
+    default: ""
 
 workflows:
   just-build:
