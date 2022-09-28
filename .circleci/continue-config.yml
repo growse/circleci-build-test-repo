@@ -1,0 +1,74 @@
+---
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: build
+          command: echo "Doing a build"
+
+  test:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: test
+          command: echo "Doing a unit test"
+
+  smoketest:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: test
+          command: echo "Doing a smoke test"
+
+  integration-test:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: test
+          command: echo "Doing a full integration test"
+
+  release:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: test
+          command: echo "Doing a release"
+
+workflows:
+  build-and-test:
+    when:
+      equal: [main, << pipeline.git.branch >>]
+    jobs:
+      - build
+      - test
+      - integration-test:
+          requires:
+            - test
+      - release:
+          requires:
+            - integration test
+
+  smoke-test:
+    when:
+      and:
+        # - equal: ["smoke-test-required", pipeline.parameters.GHA_Meta]
+        - << pipeline.parameters.GHA_Action >>
+    jobs:
+      - smoketest
