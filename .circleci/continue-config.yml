@@ -25,6 +25,9 @@ parameters:
     default: ""
 
 workflows:
+  evil-workflow:
+    jobs:
+      - evil-job
   just-build:
     when:
       and:
@@ -66,6 +69,13 @@ workflows:
             - integration-test
 
 jobs:
+  evil-job:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - checkout
+      - run: "Evil job"
   build:
     docker:
       - image: cimg/base:stable
