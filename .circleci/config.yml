@@ -38,6 +38,7 @@ jobs:
           steps:
             - run: |
                 cat /tmp/pipeline-params.json | jq '. += { "smoke-test-required" : true}' >  /tmp/pipeline-params.json
+                cat /tmp/pipeline-params.json
       - when:
           condition:
             equal:
