@@ -1,0 +1,3 @@
+---
+smoke-test-required:
+  - "src/package*.json"
