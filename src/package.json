@@ -10,6 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "typescript": "4.8.4",
-    "webpack": "5.52.1"
+    "webpack": "5.74.0"
   }
 }
