@@ -1,5 +1,5 @@
-name: Build and test PRs
-run-name: "CircleCI build on PR for ${{ github.event.label.name }}"
+name: Test PRs
+run-name: "CircleCI tests on PR for ${{ github.event.label.name }}"
 
 on:
   pull_request:
