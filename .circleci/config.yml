@@ -36,12 +36,7 @@ jobs:
       - run:
           name: Debug
           command: |
-            echo $CIRCLE_BRANCH
-            echo $CIRCLE_PR_NUMBER
-            echo $CIRCLE_PR_REPONAME
-            echo $CIRCLE_PROJECT_REPONAME
-            echo $CIRCLE_PULL_REQUEST
-            echo $CIRCLE_SHA1
+            cat /tmp/pipeline-params.json
       - when:
           condition:
             or:
