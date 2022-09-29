@@ -32,7 +32,7 @@ jobs:
           output-path: /tmp/pipeline-params.json
           mapping: |
             sourcefile.txt source-changed true
-            src/* source-changed true
+            src/.* source-changed true
       - run:
           name: Debug
           command: |
